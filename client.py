@@ -16,16 +16,16 @@ class Client:
 
         :param ip_address: IP address of server.
         :param port_num: Port number.
-        :return: 1 if connection is successful; otherwise 0.
+        :return: True if connection is successful; otherwise False.
         """
         try:
             self.client.connect(ip_address, 0, 1, port_num)  # Use the port number specified in the server
         except Exception as e:
             print(f"Failed to connect to the client: {e}")
-            return 0
+            return False
 
         print(f"Connected to the client at IP:{ip_address} | port:{port_num}")
-        return 1
+        return True
 
     def inject(self, inject_value: float, db_number: int = 1, db_start: int = 0):
         """
@@ -35,7 +35,7 @@ class Client:
         :param inject_value: Value to inject.
         :param db_number: Database block number.
         :param db_start: Database write start position.
-        :return: 1 if successful; otherwise 0.
+        :return: True if successful; otherwise False.
         """
         # Write data to the server
         data_to_write = bytearray(4)
@@ -48,12 +48,11 @@ class Client:
                                    data=data_to_write)
         except Exception as e:
             print(f"Failed to inject to client: {e}")
-            return 0
+            return False
 
-        return 1
+        return True
 
     def sniff(self, data_type: Union[Literal['str'], Literal['real']] = 'real',
-              snap7_area: Union[Literal[Areas.PA], Literal[Areas.DB]] = Areas.PA,
               db_number=1, start_pos=0, num_chars=4):
         """
         Reads data from Siemens Snap7 server.
@@ -66,23 +65,26 @@ class Client:
         :return: Read value if successful; otherwise 0.
         """
         # Read data from the server
-        try:
-            data_read = self.client.read_area(area=snap7_area,
+        try:                
+            if data_type == 'real':
+                data_read = self.client.read_area(area=Areas.PA,
                                               db_number=db_number,
                                               start=start_pos,
                                               size=num_chars)
-
-            if data_type == 'real':
                 value = get_real(data_read, 0)
             else:
+                data_read = self.client.read_area(area=Areas.DB,
+                                              db_number=db_number,
+                                              start=start_pos,
+                                              size=num_chars)
                 value = get_string(data_read, 0)
 
             print(f"Read data from server: {value}")
         except Exception as e:
             print(f"Failed to read from client: {e}")
-            return 0
+            return (False, 0.0)
 
-        return value
+        return (True, value)
 
     def disconnect(self):
         """Disconnect the client."""
@@ -93,3 +95,5 @@ class Client:
 if __name__ == "__main__":
     client = Client()
     client.connect('18.118.186.100')
+    client.inject(1)
+    client.sniff()
