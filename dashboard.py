@@ -58,8 +58,12 @@ class Dashboard:
                     "\n"
                     "Below you will be able to select the data you inject and sniff "
                     "packets to monitor how the system reacts to your attack.\n"
+                    "The injection slider below will let you inject false commands "
+                    "and the sniffing window will allow you to monitor values. "
+                    "An electric microgrid is in-crisis if the frequency deviates "
+                    "to 1.8 Hz or more away from its nominal 60 Hz.\n"
                     "\n"
-                    "Ready for the challenge? **Let's** **get** **this** **started**😈"
+                    "Ready for the challenge? **Let's** **get** **this** **started** 😈"
                 )
         return
 
