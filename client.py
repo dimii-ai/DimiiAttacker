@@ -95,5 +95,3 @@ class Client:
 if __name__ == "__main__":
     client = Client()
     client.connect('18.118.186.100')
-    client.inject(1)
-    client.sniff()
