@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 
 
 IP_ADDRESS = "18.118.186.100"
-PORT_NUM = 24564
+PORT_NUM = 101
 DEQUE_LEN = 20
 
 
@@ -64,6 +64,8 @@ class Dashboard:
                     "to 1.8 Hz or more away from its nominal 60 Hz.\n"
                     "\n"
                     "Ready for the challenge? **Let's** **get** **this** **started** 😈"
+                    "\n"
+                    "Switch to port 102 and starting tampering with the PLC device."
                 )
         return
 
